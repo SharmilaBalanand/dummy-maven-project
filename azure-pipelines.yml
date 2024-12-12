@@ -80,24 +80,17 @@ stages:
         command: 'push'
         tags: 'latest'
 
+
 - stage: DeploytoAKS
   jobs:
   - job: DeploytoAKS
     steps:
     - task: Kubernetes@1
       inputs:
-        connectionType: 'KubeConfig'
-        kubeconfig: '$(KUBECONFIG_CREDENTIALS_ID)'
+        connectionType: 'Azure Resource Manager'
+        azureSubscription: 'kubernetes-id'  # Replace with your actual service connection name
+        resourceGroupName: 'rg-demo1'  # Replace with your resource group name
+        clusterName: 'k8s-sqdemo'  # Replace with your AKS cluster name
+        namespace: 'default'
         command: 'apply'
         arguments: '-f deployment.yaml'
-
-# - stage: DeploytoAKS
-#   jobs:
-#   - job: DeploytoAKS
-#     steps:
-#     - task: Kubernetes@1
-#       inputs:
-#         connectionType: 'KubeConfig'
-#         kubeconfig: '$(KUBECONFIG_CREDENTIALS_ID)'
-#         command: 'apply'
-#         arguments: '-f deployment.yaml'
