@@ -3,11 +3,10 @@ trigger:
 
 variables:
   DOCKER_IMAGE: "sharmila79/dummy-maven-project"
-  DOCKER_CREDENTIALS_ID: "docker-id"
-  
+  DOCKER_CREDENTIALS_ID: "docker-id"  
   SONARQUBE_TOKEN: "$(sonar)"
   KUBECONFIG_CREDENTIALS_ID: "kubernetes-id"
-  SONARQUBE_TOKEN: $(SONARQUBE_TOKEN)
+  # SONARQUBE_TOKEN: $(SONARQUBE_TOKEN)
 
 pool:
   name: Default
