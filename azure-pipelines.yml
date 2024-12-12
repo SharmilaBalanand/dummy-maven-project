@@ -21,6 +21,29 @@ stages:
     - checkout: self
       clean: true
 
+- stage: StaticAnalysis
+  jobs:
+  - job: StaticAnalysis
+    steps:
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: 'clean install'
+        options: '-X'
+    - task: SonarQubePrepare@7
+      inputs:
+        SonarQube: 'sonar'
+        scannerMode: 'CLI'
+        configMode: 'file'
+        configFile: 'sonar-project.properties'
+        extraProperties: |
+          sonar.login=$(SONARQUBE_TOKEN)
+    - task: SonarQubeAnalyze@7
+    - task: SonarQubePublish@7
+      inputs:
+        pollingTimeoutSec: '300'
+
+
 - stage: BuildProject
   jobs:
   - job: BuildProject
@@ -74,5 +97,4 @@ stages:
 
 
         
-
 
