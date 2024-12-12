@@ -24,14 +24,14 @@ stages:
       inputs:
         mavenPomFile: 'pom.xml'
         goals: 'clean install'
-    - task: SonarQubePrepare@4
+    - task: SonarQubePrepare@7
       inputs:
         SonarQube: 'sonar'
         scannerMode: 'CLI'
         configMode: 'file'
         configFile: 'sonar-project.properties'
-    - task: SonarQubeAnalyze@4
-    - task: SonarQubePublish@4
+    - task: SonarQubeAnalyze@7
+    - task: SonarQubePublish@7
       inputs:
         pollingTimeoutSec: '300'
 
