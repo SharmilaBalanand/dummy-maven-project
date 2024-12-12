@@ -6,11 +6,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dummy-maven-project
+      app: my-app  # Ensure this matches the Service selector
   template:
     metadata:
       labels:
-        app: dummy-maven-project
+        app: my-app  # Ensure this matches the Service selector
     spec:
       containers:
       - name: dummy-maven-project
@@ -24,7 +24,7 @@ metadata:
   name: my-service
 spec:
   selector:
-    app: my-app
+    app: my-app  # Ensure this matches the Deployment labels
   ports:
     - protocol: TCP
       port: 8081
