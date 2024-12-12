@@ -87,10 +87,8 @@ stages:
     steps:
     - task: Kubernetes@1
       inputs:
-        connectionType: 'Azure Resource Manager'
-        azureSubscriptionEndpoint: 'kubernetes-id'  # Replace with your actual service connection name
-        resourceGroupName: 'rg-demo1'  # Replace with your resource group name
-        clusterName: 'k8s-sqdemo'  # Replace with your AKS cluster name
+        connectionType: 'KubeConfig'
+        kubeConfig: '$(KUBECONFIG_CREDENTIALS_ID)'  # Replace with the variable containing your KubeConfig
         namespace: 'default'
         command: 'apply'
         arguments: '-f deployment.yaml'
