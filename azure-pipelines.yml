@@ -24,27 +24,32 @@ stages:
 - stage: StaticAnalysis
   jobs:
   - job: StaticAnalysis
+    displayName: "Static Code Analysis"
     steps:
     - task: Maven@3
+      displayName: "Build and Install Dependencies"
       inputs:
         mavenPomFile: 'pom.xml'
         goals: 'clean install'
         options: '-X'
 
     - task: SonarQubePrepare@7
+      displayName: "Prepare SonarQube Analysis"
       inputs:
         SonarQube: 'sonar'  # Replace with your SonarQube service connection name
         scannerMode: 'CLI'
         configMode: 'file'
         configFile: 'sonar-project.properties'
         extraProperties: |
-          sonar.projectKey=SonarDemo  # Replace with your SonarQube project key
-          sonar.host.url=http://4.213.193.176:9000  # Replace with your SonarQube server URL
-          sonar.login=$(SONARQUBE_TOKEN)  # Reference to your secret token variable
+          sonar.projectKey=SonarDemo
+          sonar.host.url=http://4.213.193.176:9000
+          sonar.login=$(SONARQUBE_TOKEN)
 
     - task: SonarQubeAnalyze@7
+      displayName: "Run SonarQube Analysis"
 
     - task: SonarQubePublish@7
+      displayName: "Publish SonarQube Results"
       inputs:
         pollingTimeoutSec: '300'
 
