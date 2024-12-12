@@ -1,4 +1,3 @@
-
 trigger:
 - main
 
@@ -8,6 +7,9 @@ variables:
   SONARQUBE_SERVER: "sonar"
   SONARQUBE_TOKEN: "$(sonar-id)"
   KUBECONFIG_CREDENTIALS_ID: "kubernetes-id"
+
+pool:
+  name: sqagentpool
 
 stages:
 - stage: CloneCode
