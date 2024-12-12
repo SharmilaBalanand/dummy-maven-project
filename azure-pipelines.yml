@@ -21,28 +21,6 @@ stages:
     - checkout: self
       clean: true
 
-# - stage: StaticAnalysis
-#   jobs:
-#   - job: StaticAnalysis
-#     steps:
-#     - task: Maven@3
-#       inputs:
-#         mavenPomFile: 'pom.xml'
-#         goals: 'clean install'
-#         options: '-X'
-#     - task: SonarQubePrepare@7
-#       inputs:
-#         SonarQube: 'sonar'
-#         scannerMode: 'CLI'
-#         configMode: 'file'
-#         configFile: 'sonar-project.properties'
-#         extraProperties: |
-#           sonar.login=$(SONARQUBE_TOKEN)
-#     - task: SonarQubeAnalyze@7
-#     - task: SonarQubePublish@7
-#       inputs:
-#         pollingTimeoutSec: '300'
-
 - stage: BuildProject
   jobs:
   - job: BuildProject
@@ -80,30 +58,16 @@ stages:
         command: 'push'
         tags: 'latest'
 
-
 - stage: DeploytoAKS
   jobs:
   - job: DeploytoAKS
     steps:
     - task: Kubernetes@1
       inputs:
-        connectionType: 'KubeConfig'
-        kubeConfig: '$(KUBECONFIG_CREDENTIALS_ID)'  # Replace with the variable containing your KubeConfig
+        connectionType: 'Azure Resource Manager'
+        azureSubscriptionEndpoint: 'my-azure-connection'  # Replace with your AzureRM service connection name
+        resourceGroupName: 'your-resource-group'  # Replace with your resource group
+        clusterName: 'your-aks-cluster'  # Replace with your AKS cluster name
         namespace: 'default'
         command: 'apply'
         arguments: '-f deployment.yaml'
-
-
-# - stage: DeploytoAKS
-#   jobs:
-#   - job: DeploytoAKS
-#     steps:
-#     - task: Kubernetes@1
-#       inputs:
-#         connectionType: 'KubeConfig'
-#         azureSubscription: 'kubernetes-id'  # Replace with your actual service connection name
-#         resourceGroupName: 'rg-demo1'  # Replace with your resource group name
-#         clusterName: 'k8s-sqdemo'  # Replace with your AKS cluster name
-#         namespace: 'default'
-#         command: 'apply'
-#         arguments: '-f deployment.yaml'
