@@ -7,6 +7,7 @@ variables:
   SONARQUBE_SERVER: "sonar"
   SONARQUBE_TOKEN: "$(sonar)"
   KUBECONFIG_CREDENTIALS_ID: "kubernetes-id"
+  SONARQUBE_TOKEN: $(SONARQUBE_TOKEN)
 
 pool:
   name: Default
@@ -36,7 +37,7 @@ stages:
     - task: SonarQubePrepare@7
       displayName: "Prepare SonarQube Analysis"
       inputs:
-        SonarQube: 'sonar'  # Replace with your SonarQube service connection name
+        SonarQube: 'sonar'  # SonarQube service connection name
         scannerMode: 'CLI'
         configMode: 'file'
         configFile: 'sonar-project.properties'
