@@ -9,7 +9,9 @@ variables:
   KUBECONFIG_CREDENTIALS_ID: "kubernetes-id"
 
 pool:
-  name: sqagentpool
+  name: Default
+  demands:
+  - agent.name -equals sqagentpool
 
 stages:
 - stage: CloneCode
