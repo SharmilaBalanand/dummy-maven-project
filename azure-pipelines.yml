@@ -5,7 +5,7 @@ variables:
   DOCKER_IMAGE: "sharmila79/dummy-maven-project"
   DOCKER_CREDENTIALS_ID: "docker-id"
   SONARQUBE_SERVER: "sonar"
-  SONARQUBE_TOKEN: "$(sonar-id)"
+  SONARQUBE_TOKEN: "$(sonar)"
   KUBECONFIG_CREDENTIALS_ID: "kubernetes-id"
 
 pool:
