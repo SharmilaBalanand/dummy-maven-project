@@ -30,18 +30,24 @@ stages:
         mavenPomFile: 'pom.xml'
         goals: 'clean install'
         options: '-X'
+
     - task: SonarQubePrepare@7
       inputs:
-        SonarQube: 'sonar'
+        SonarQube: 'sonar'  # Replace with your SonarQube service connection name
         scannerMode: 'CLI'
         configMode: 'file'
         configFile: 'sonar-project.properties'
         extraProperties: |
-          sonar.login=$(SONARQUBE_TOKEN)
+          sonar.projectKey=SonarDemo  # Replace with your SonarQube project key
+          sonar.host.url=http://4.213.193.176:9000  # Replace with your SonarQube server URL
+          sonar.login=$(SONARQUBE_TOKEN)  # Reference to your secret token variable
+
     - task: SonarQubeAnalyze@7
+
     - task: SonarQubePublish@7
       inputs:
         pollingTimeoutSec: '300'
+
 
 
 - stage: BuildProject
