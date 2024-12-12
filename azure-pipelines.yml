@@ -36,6 +36,8 @@ stages:
         scannerMode: 'CLI'
         configMode: 'file'
         configFile: 'sonar-project.properties'
+        extraProperties: |
+          sonar.login=$(SONARQUBE_TOKEN)
     - task: SonarQubeAnalyze@7
     - task: SonarQubePublish@7
       inputs:
