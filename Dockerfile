@@ -7,5 +7,5 @@ RUN mvn clean package
 # Use OpenJDK 17 to run the application
 FROM openjdk:17-jdk-slim
 WORKDIR /app
-COPY --from=build /app/target/your-app.jar .
+COPY --from=build /app/target/dummy-project-1.0-SNAPSHOT.jar .
 ENTRYPOINT ["java", "-jar", "your-app.jar"]
