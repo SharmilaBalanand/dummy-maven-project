@@ -29,6 +29,7 @@ stages:
       inputs:
         mavenPomFile: 'pom.xml'
         goals: 'clean install'
+        options: '-X'
     - task: SonarQubePrepare@7
       inputs:
         SonarQube: 'sonar'
@@ -48,6 +49,7 @@ stages:
       inputs:
         mavenPomFile: 'pom.xml'
         goals: 'clean package'
+        options: '-X'
 
 - stage: RunUnitTests
   jobs:
@@ -57,6 +59,7 @@ stages:
       inputs:
         mavenPomFile: 'pom.xml'
         goals: 'test'
+        options: '-X'
 
 - stage: BuildDockerImage
   jobs:
