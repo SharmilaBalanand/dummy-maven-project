@@ -66,8 +66,13 @@ stages:
       inputs:
         connectionType: 'Azure Resource Manager'
         azureSubscriptionEndpoint: 'my-azure-connection'  # Replace with your AzureRM service connection name
-        resourceGroupName: 'your-resource-group'  # Replace with your resource group
-        clusterName: 'your-aks-cluster'  # Replace with your AKS cluster name
-        namespace: 'default'
+        azureResourceGroup: 'rg-demo1'  # Replace with your Azure resource group
+        clusterName: 'k8s-sqdemo'  # Replace with your AKS cluster name
+        namespace: 'default'  # Specify the namespace; default is fine if not using custom namespaces
         command: 'apply'
-        arguments: '-f deployment.yaml'
+        arguments: '-f deployment.yaml'  # Replace with the path to your deployment file
+
+
+        
+
+
