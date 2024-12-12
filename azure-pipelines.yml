@@ -26,17 +26,10 @@ stages:
   - job: StaticAnalysis
     displayName: "Static Code Analysis"
     steps:
-    - task: Maven@3
-      displayName: "Build and Install Dependencies"
-      inputs:
-        mavenPomFile: 'pom.xml'
-        goals: 'clean install'
-        options: '-X'
-
     - task: SonarQubePrepare@7
       displayName: "Prepare SonarQube Analysis"
       inputs:
-        SonarQube: 'sonar'  # SonarQube service connection name
+        SonarQube: 'sonar'  # Replace with your SonarQube service connection name
         scannerMode: 'CLI'
         configMode: 'file'
         configFile: 'sonar-project.properties'
@@ -52,6 +45,7 @@ stages:
       displayName: "Publish SonarQube Results"
       inputs:
         pollingTimeoutSec: '300'
+
 
 
 
