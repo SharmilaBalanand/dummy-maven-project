@@ -88,5 +88,6 @@ stages:
       inputs:
         connectionType: 'KubeConfig'
         kubeconfig: '$(KUBECONFIG_CREDENTIALS_ID)'
+        kubernetesServiceEndpoint: 'YourKubernetesServiceConnectionName'  # Replace with your actual service connection name
         command: 'apply'
         arguments: '-f deployment.yaml'
