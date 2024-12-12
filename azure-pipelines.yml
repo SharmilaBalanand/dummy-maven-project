@@ -1,0 +1,82 @@
+trigger:
+- main
+
+variables:
+  DOCKER_IMAGE: "sharmila79/dummy-maven-project"
+  DOCKER_CREDENTIALS_ID: "docker-id"
+  SONARQUBE_SERVER: "sonar"
+  SONARQUBE_TOKEN: "$(sonar-id)"
+  KUBECONFIG_CREDENTIALS_ID: "kubernetes-id"
+
+stages:
+- stage: CloneCode
+  jobs:
+  - job: CloneCode
+    steps:
+    - checkout: self
+      clean: true
+
+- stage: StaticAnalysis
+  jobs:
+  - job: StaticAnalysis
+    steps:
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: 'clean install'
+    - task: SonarQubePrepare@4
+      inputs:
+        SonarQube: 'sonar'
+        scannerMode: 'CLI'
+        configMode: 'file'
+        configFile: 'sonar-project.properties'
+    - task: SonarQubeAnalyze@4
+    - task: SonarQubePublish@4
+      inputs:
+        pollingTimeoutSec: '300'
+
+- stage: BuildProject
+  jobs:
+  - job: BuildProject
+    steps:
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: 'clean package'
+
+- stage: RunUnitTests
+  jobs:
+  - job: RunUnitTests
+    steps:
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: 'test'
+
+- stage: BuildDockerImage
+  jobs:
+  - job: BuildDockerImage
+    steps:
+    - script: docker build -t $(DOCKER_IMAGE) .
+
+- stage: PushDockerImagetoDockerHub
+  jobs:
+  - job: PushDockerImagetoDockerHub
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: '$(DOCKER_CREDENTIALS_ID)'
+        repository: '$(DOCKER_IMAGE)'
+        command: 'push'
+        tags: 'latest'
+
+- stage: DeploytoAKS
+  jobs:
+  - job: DeploytoAKS
+    steps:
+    - task: Kubernetes@1
+      inputs:
+        connectionType: 'KubeConfig'
+        kubeconfig: '$(KUBECONFIG_CREDENTIALS_ID)'
+        command: 'apply'
+        arguments: '-f deployment.yaml'
