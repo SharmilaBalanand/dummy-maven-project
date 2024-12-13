@@ -36,15 +36,15 @@ stages:
               options: -X
 
   - stage: SonarQubeAnalysis
-  jobs:
-  - job: SonarQubeAnalysis
-    steps:
-    - task: SonarQubePrepare@5
-      inputs:
-        SonarQube: 'sonar'
-        scannerMode: 'CLI'
-        configMode: 'file'
-        configFile: 'sonar-project.properties'
+    jobs:
+    - job: SonarQubeAnalysis
+      steps:
+      - task: SonarQubePrepare@5
+        inputs:
+          SonarQube: 'sonar'
+          scannerMode: 'CLI'
+          configMode: 'file'
+          configFile: 'sonar-project.properties'
 
     - script: mvn clean verify sonar:sonar
       displayName: 'Build and Analyze with Maven'
