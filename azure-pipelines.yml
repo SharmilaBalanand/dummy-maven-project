@@ -4,10 +4,8 @@ trigger:
 variables:
   DOCKER_IMAGE: "sharmila79/dummy-maven-project"
   DOCKER_CREDENTIALS_ID: "docker-id"  
-  SONARQUBE_TOKEN: "$(sonar)"
   KUBECONFIG_CREDENTIALS_ID: "kubernetes-id"
-  # SONARQUBE_TOKEN: $(SONARQUBE_TOKEN)
-
+  
 pool:
   name: Default
   demands:
@@ -21,34 +19,26 @@ stages:
     - checkout: self
       clean: true
 
-- stage: StaticAnalysis
+- stage: SonarQubeAnalysis
   jobs:
-  - job: StaticAnalysis
-    displayName: "Static Code Analysis"
+  - job: SonarQubeAnalysis
     steps:
-    - task: SonarQubePrepare@7
-      displayName: "Prepare SonarQube Analysis"
+    - task: SonarQubePrepare@5
       inputs:
-        SonarQube: 'sonar'  # Replace with your SonarQube service connection name
+        SonarQube: 'sonar'
         scannerMode: 'CLI'
         configMode: 'file'
         configFile: 'sonar-project.properties'
-        extraProperties: |
-          sonar.projectKey=SonarDemo
-          sonar.host.url=http://4.213.193.176:9000
-          sonar.login=$(SONARQUBE_TOKEN)
 
-    - task: SonarQubeAnalyze@7
-      displayName: "Run SonarQube Analysis"
+    - script: mvn clean verify
+      displayName: 'Build with Maven'
 
-    - task: SonarQubePublish@7
-      displayName: "Publish SonarQube Results"
+    - task: SonarQubeAnalyze@5
+
+    - task: SonarQubePublish@5
       inputs:
         pollingTimeoutSec: '300'
-
-
-
-
+      
 - stage: BuildProject
   jobs:
   - job: BuildProject
