@@ -76,8 +76,6 @@ stages:
         repository: '$(DOCKER_IMAGE)'
         command: 'push'
         tags: 'latest'
-
-
 - stage: DeploytoAKS
   jobs:
   - job: DeploytoAKS
