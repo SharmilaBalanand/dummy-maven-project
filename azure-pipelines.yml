@@ -18,7 +18,6 @@ stages:
     steps:
     - checkout: self
       clean: true
-
 - stage: SonarQubeAnalysis
   jobs:
   - job: SonarQubeAnalysis
@@ -38,8 +37,7 @@ stages:
 
     - task: SonarQubePublish@5
       inputs:
-        pollingTimeoutSec: '300'
-      
+        pollingTimeoutSec: '300'      
 - stage: BuildProject
   jobs:
   - job: BuildProject
