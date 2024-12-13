@@ -16,33 +16,6 @@ stages:
         steps:
           - checkout: self
             clean: true
-  - stage: SonarQubeAnalysis
-    jobs:
-      - job: SonarQubeAnalysis
-        steps:
-          - task: SonarQubePrepare@5
-            inputs:
-              SonarQube: sonar
-              scannerMode: CLI
-              configMode: file
-              configFile: sonar-project.properties
-          - script: mvn clean verify sonar:sonar
-            displayName: Build and Analyze with Maven
-            env:
-              SONAR_HOST_URL: http://4.213.193.176:9000
-              SONAR_LOGIN: sqp_a36bef0658104dd34bc87100dea945739dc4c997
-          - task: SonarQubePublish@5
-            inputs:
-              pollingTimeoutSec: "300"
-  - stage: BuildProject
-    jobs:
-      - job: BuildProject
-        steps:
-          - task: Maven@3
-            inputs:
-              mavenPomFile: pom.xml
-              goals: clean package
-              options: -X
   - stage: BuildProject
     jobs:
       - job: BuildProject
@@ -61,6 +34,25 @@ stages:
               mavenPomFile: pom.xml
               goals: test
               options: -X
+
+  - stage: SonarQubeAnalysis
+    jobs:
+      - job: SonarQubeAnalysis
+        steps:
+          - task: SonarQubePrepare@5
+            inputs:
+              SonarQube: sonar
+              scannerMode: CLI
+              configMode: file
+              configFile: sonar-project.properties
+          - script: mvn clean verify sonar:sonar
+            displayName: Build and Analyze with Maven
+            env:
+              SONAR_HOST_URL: http://4.213.193.176:9000
+              SONAR_LOGIN: sqp_a36bef0658104dd34bc87100dea945739dc4c997
+          - task: SonarQubePublish@5
+            inputs:
+              pollingTimeoutSec: "300"
   - stage: BuildDockerImage
     jobs:
       - job: BuildDockerImage
