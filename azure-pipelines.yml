@@ -19,7 +19,7 @@ stages:
     - checkout: self
       clean: true
 
-- stage: SonarQubeAnalysis
+-- stage: SonarQubeAnalysis
   jobs:
   - job: SonarQubeAnalysis
     steps:
